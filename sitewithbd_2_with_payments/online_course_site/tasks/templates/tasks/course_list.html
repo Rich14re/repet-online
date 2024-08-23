@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <script src="{% static 'update_success_url.js' %}" defer></script>
+    <script src="{% static 'pay.js' %}" defer></script>
+</head>
+<body>
+    <div class="flex-container">
+        <header class="animated-header">
+            <div class="container flex-header">
+                <div class="logo">
+                    <a class="navbar-brand">РЕПЕТИ_TOP</a>
+                </div>
+                <nav class="navbar navbar-expand-md">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item"><a href="{% url 'home' %}" class="btn btn-primary">Главная</a></li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item"><a href="{% url 'course_list' %}" class="btn btn-course">Курс</a></li>
+                            <li class="nav-item"><a href="{% url 'account' %}" class="btn btn-primary">Аккаунт</a></li>
+                            <li class="nav-item"><a href="{% url 'computer_science_tasks' %}" class="btn btn-primary">Информатика</a></li>
+                            {% else %}
+                            <li class="nav-item"><a href="{% url 'login' %}" class="btn btn-primary">Вход</a></li>
+                            <li class="nav-item"><a href="{% url 'register' %}" class="btn btn-primary">Регистрация</a></li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                            <li class="nav-item"><a href="{% url 'add_task' %}" class="btn btn-danger">Добавить задание</a></li>
+                            <li class="nav-item"><a href="{% url 'add_explanation' %}" class="btn btn-danger">Добавить теорию</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <div class="flex-content">
+            <aside class="sidebar">
+                <div class="button-panel">
+                    <button class="tab-button active" data-target="6class">6 класс</button>
+                    <button class="tab-button" data-target="7class">7 класс</button>
+                    <button class="tab-button" data-target="8class">8 класс</button>
+                    <button class="tab-button" data-target="oge-ege">ОГЭ/ЕГЭ</button>
+                </div>
+            </aside>
+            <main class="main-content">
+                <div id="6class" class="tab-content">
+                    {% if has_platinum_access %}
+                        <h1 style="text-align: center;">Курс 6 класса</h1>
+                        <p style="text-align: center;"></p>
+                        <h1 style="text-align: center;">Задания курса</h1>
+                        <div class="tasks">
+                            {% for course in courses %}
+                                {% if course.grade == '6class' %}
+                                    <li><a href="{% url 'task_detail' course.id %}" class="btn btn-primary">{{ course.title }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            <h1 style="text-align: center;">Купить курс - "6 класс"</h1>
+                            <p>На данный момент вы не можете просматривать этот курс.</p>
+                            <p>Для того, чтобы открыть курс по математике, приобретите его, заполнив форму ниже.</p>
+                                <div class="payment-card animated-main">
+                                    <img src="{% static 'logo_matem.png' %}" alt="Course Image">
+                                    <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
+                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="label" value="{{ user.id }}"/>
+                                        <input type="hidden" name="quickpay-form" value="shop"/>
+                                        <input type="hidden" name="targets" value="Оплата за курс"/>
+                                        <div class="form-check">
+                                            <p style="text-align: center;">Стоимость курса</p>
+                                            <p style="text-align: center;">700 рублей</p>
+                                            <input type="hidden" name="sum" id="sale" value="2.00" data-type="number"/>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <div class="type-payment ">
+                                            <p>Способ оплаты:</p>
+                                            <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+                                            <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <input type="hidden" name="successURL" value="platinum">
+                                        <p class="important">ВАЖНО! После успешного платежа нажмите на кнопку "Перейти обратно на сайт". В случае ошибок обращайтесь на нашу почту.</p>
+                                        <input onclick="inputEdit()" type="submit" class="btn btn-submit" value="Оплатить"/>
+                                    </form>
+                                </div>
+                        {% endif %}
+                </div>
+                <div id="7class" class="tab-content" style="display:none;">
+                    {% if has_gold_access %}
+                        <h1 style="text-align: center;">Курс 7 класса</h1>
+                        <p style="text-align: center;"></p>
+                        <h1 style="text-align: center;">Задания курса</h1>
+                        <div class="tasks">
+                            <ul>
+                                {% for course in courses %}
+                                {% if course.grade == '7class' %}
+                                    <li><a href="{% url 'task_detail' course.id %}" class="btn btn-primary">{{ course.title }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        {% else %}
+                            <h1 style="text-align: center;">Купить курс - "7 класс"</h1>
+                            <p>На данный момент вы не можете просматривать этот курс.</p>
+                            <p>Для того, чтобы открыть курс по математике, приобретите его, заполнив форму ниже.</p>
+                                <div class="payment-card animated-main">
+                                    <img src="{% static 'logo_math.png' %}" alt="Course Image">
+                                    <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
+                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="label" value="{{ user.id }}"/>
+                                        <input type="hidden" name="quickpay-form" value="shop"/>
+                                        <input type="hidden" name="targets" value="Оплата за курс"/>
+                                        <div class="form-check">
+                                            <p style="text-align: center;">Стоимость курса</p>
+                                            <p style="text-align: center;">700 рублей</p>
+                                            <input id="sale2" type="hidden" name="sum" id="sale2" value="2.00" data-type="number"/>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <div class="type-payment ">
+                                            <p>Способ оплаты:</p>
+                                            <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+                                            <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <input type="hidden" name="successURL" class="successURL" value="gold"/>
+                                        <input type="hidden" class="status" value="gold"/>
+                                        <p class="important">ВАЖНО! После успешного платежа нажмите на кнопку "Перейти обратно на сайт". В случае ошибок обращайтесь на нашу почту.</p>
+                                        <input onclick="inputEdit()" type="submit" class="btn btn-submit" value="Оплатить"/>
+                                    </form>
+                                </div>
+                        {% endif %}
+                </div>
+                <div id="8class" class="tab-content" style="display:none;">
+                    {% if has_premium_access %}
+                        <h1 style="text-align: center;">Курс 8 класса</h1>
+                        <p style="text-align: center;"></p>
+                        <h1 style="text-align: center;">Задания курса</h1>
+                        <div class="tasks">
+                            <ul>
+                                {% for course in courses %}
+                                {% if course.grade == '8class' %}
+                                    <li><a href="{% url 'task_detail' course.id %}" class="btn btn-primary">{{ course.title }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        {% else %}
+                            <h1 style="text-align: center;">Купить курс - "8 класс"</h1>
+                            <p>На данный момент вы не можете просматривать этот курс.</p>
+                            <p>Для того, чтобы открыть курс по математике, приобретите его, заполнив форму ниже.</p>
+                                <div class="payment-card animated-main">
+                                    <img src="{% static 'logo_alg.png' %}" alt="Course Image">
+                                    <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
+                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="label" value="{{ user.id }}"/>
+                                        <input type="hidden" name="quickpay-form" value="shop"/>
+                                        <input type="hidden" name="targets" value="Оплата за курс"/>
+                                        <div class="form-check">
+                                            <p style="text-align: center;">Стоимость курса</p>
+                                            <p style="text-align: center;">700 рублей</p>
+                                            <input id="sale3" type="hidden" name="sum" id="sale3" value="2.00" data-type="number"/>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <div class="type-payment ">
+                                            <p>Способ оплаты:</p>
+                                            <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+                                            <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <input type="hidden" name="successURL" class="successURL" value="premium"/>
+                                        <input type="hidden" class="status" value="premium"/>
+                                        <p class="important">ВАЖНО! После успешного платежа нажмите на кнопку "Перейти обратно на сайт". В случае ошибок обращайтесь на нашу почту.</p>
+                                        <input onclick="inputEdit()" type="submit" class="btn btn-submit" value="Оплатить"/>
+                                    </form>
+                                </div>
+                        {% endif %}
+                </div>
+                <div id="oge-ege" class="tab-content" style="display:none;">
+                    {% if has_advanced_access %}
+                        <h1 style="text-align: center;">Главная страничка курса по математике</h1>
+                        <p style="text-align: center;">курс по ОГЭ/ЕГЭ</p>
+                        <h1 style="text-align: center;">Задания курса</h1>
+                        <div class="tasks">
+                            <ul>
+                                {% for course in courses %}
+                                {% if course.grade == '9class' %}
+                                    <li><a href="{% url 'task_detail' course.id %}" class="btn btn-primary">{{ course.title }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        <div>
+                            <h1 style="text-align: center;">Теория/консультации</h1>
+                            <ul>
+                                {% for explain in explains %}
+                                    {% if explain.id %}
+                                        <li>
+                                            <a href="{% url 'explanation_detail' explain.id %}" class="btn btn-primary">{{ explain.title }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% else %}
+                            <h1 style="text-align: center;">Купить курс - "ЕГЭ/ОГЭ"</h1>
+                            <p>На данный момент вы не можете просматривать этот курс.</p>
+                            <p>Для того, чтобы открыть курс по математике, приобретите его, заполнив форму ниже.</p>
+                                <div class="payment-card animated-main">
+                                    <img src="{% static 'logo.jpg' %}" alt="Course Image">
+                                    <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
+                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="label" value="{{ user.id }}"/>
+                                        <input type="hidden" name="quickpay-form" value="shop"/>
+                                        <input type="hidden" name="targets" value="Оплата за курс"/>
+                                        <div class="form-check">
+                                            <p style="text-align: center;">Стоимость курса</p>
+                                            <p style="text-align: center;">700 рублей</p>
+                                            <input id="sale4" type="hidden" class="sum" name="sum" value="2.00" data-type="number"/>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <div class="type-payment ">
+                                            <p>Способ оплаты:</p>
+                                            <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+                                            <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label>
+                                        </div>
+                                        <div class="separator"></div>
+                                        <input type="hidden" name="successURL" value="advanced">
+                                        <p class="important">ВАЖНО! После успешного платежа нажмите на кнопку "Перейти обратно на сайт". В случае ошибок обращайтесь на нашу почту.</p>
+                                        <input onclick="inputEdit()" type="submit" class="btn btn-submit" value="Оплатить"/>
+                                    </form>
+                                </div>
+                        {% endif %}
+                </div>
+            </main>
+        </div>
+        <footer class="animated-footer">
+            &copy; 2024 РЕПЕТИ_TOP
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var buttons = document.querySelectorAll('.tab-button');
+            var contents = document.querySelectorAll('.tab-content');
+
+            buttons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    buttons.forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    contents.forEach(function(content) {
+                        content.style.display = 'none';
+                    });
+                    button.classList.add('active');
+                    var target = button.getAttribute('data-target');
+                    document.getElementById(target).style.display = 'block';
+                });
+            });
+
+            // Simulate a click on the first button to show initial content
+            buttons[0].click();
+        });
+    </script>
+</body>
+</html>

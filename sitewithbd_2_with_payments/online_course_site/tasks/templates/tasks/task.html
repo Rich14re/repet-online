@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ course.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="flex-container">
+        <header>
+            <div class="flex-header">
+                <div class="logo">
+                    <a>Математика EMATH</a>
+                </div>
+               <nav>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Главная</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'course_list' %}">Курс</a></li>
+                        <li><a href="{% url 'account' %}">Аккаунт</a></li>
+                        <li class="nav-item"><a href="{% url 'computer_science_tasks' %}" class="btn btn-primary">Информатика</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login' %}">Вход</a></li>
+                        <li><a href="{% url 'register' %}">Регистрация</a></li>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                        <li><a href="{% url 'add_task' %}">Добавить задание</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <aside>
+            <h1>{{ course.title }}</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% for task in tasks %}
+                    <div>
+                        <p>{{ task.description }}</p>
+                        <input type="text" name="answer_{{ task.id }}">
+                    </div>
+                {% endfor %}
+                <button type="submit">Check Answers</button>
+            </form>
+            {% if results %}
+                <h2>Results</h2>
+                <ul>
+                    {% for task, user_answer, is_correct in results %}
+                        <li>{{ task.description }} - Your answer: {{ user_answer }} - {% if is_correct %}Correct{% else %}Incorrect{% endif %}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </aside>
+        <footer>
+            &copy; 2024 EMATH
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="flex-container">
+        <header class="animated-header">
+            <div class="container flex-header">
+                <div class="logo">
+                    <a class="navbar-brand">РЕПЕТИ_TOP</a>
+                </div>
+                <nav class="navbar navbar-expand-md">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item"><a href="{% url 'home' %}" class="btn btn-primary">Главная</a></li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item"><a href="{% url 'course_list' %}" class="btn btn-course">Курс</a></li>
+                            <li class="nav-item"><a href="{% url 'account' %}" class="btn btn-primary">Аккаунт</a></li>
+                            <li class="nav-item"><a href="{% url 'computer_science_tasks' %}" class="btn btn-primary">Информатика</a></li>
+                            {% else %}
+                            <li class="nav-item"><a href="{% url 'login' %}" class="btn btn-primary">Вход</a></li>
+                            <li class="nav-item"><a href="{% url 'register' %}" class="btn btn-primary">Регистрация</a></li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                            <li class="nav-item"><a href="{% url 'add_task' %}" class="btn btn-danger">Добавить задание</a></li>
+                            <li class="nav-item"><a href="{% url 'add_explanation' %}" class="btn btn-danger">Добавить теорию</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+    <aside class="animated-main">
+        <div class="flex-form">
+            <h2>Вход</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="login-btn">
+                    <button type="submit" class="btn btn-primary">Вход</button>
+                </div>
+             </form>
+        </div>
+    </aside>
+    <footer class="animated-footer">
+        &copy; 2024 РЕПЕТИ_TOP
+    </footer>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var navbarToggler = document.querySelector('.navbar-toggler');
+            var navbarCollapse = document.querySelector('.navbar-collapse');
+
+            navbarToggler.addEventListener('click', function () {
+                this.classList.toggle('collapsed');
+                var isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                if (isExpanded) {
+                    navbarCollapse.style.height = '0px';
+                    navbarCollapse.setAttribute('aria-expanded', 'false');
+                } else {
+                    navbarCollapse.style.height = navbarCollapse.scrollHeight + 'px';
+                    navbarCollapse.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
