@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.title }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="flex-container">
+        <header class="animated-header">
+            <div class="container flex-header">
+                <div class="logo">
+                    <a class="navbar-brand">РЕПЕТИ_TOP</a>
+                </div>
+                <nav class="navbar navbar-expand-md">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item"><a href="{% url 'home' %}" class="btn btn-primary">Главная</a></li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item"><a href="{% url 'course_list' %}" class="btn btn-course">Курс</a></li>
+                            <li class="nav-item"><a href="{% url 'account' %}" class="btn btn-primary">Аккаунт</a></li>
+                            <li class="nav-item"><a href="{% url 'computer_science_tasks' %}" class="btn btn-primary">Информатика</a></li>
+                            {% else %}
+                            <li class="nav-item"><a href="{% url 'login' %}" class="btn btn-primary">Вход</a></li>
+                            <li class="nav-item"><a href="{% url 'register' %}" class="btn btn-primary">Регистрация</a></li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                            <li class="nav-item"><a href="{% url 'add_task' %}" class="btn btn-danger">Добавить задание</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <aside>
+            <div class="name-variant">
+                <h1>{{ course.title }}</h1>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {% if theoretical_tasks and not show_practical_tasks %}
+                    <h2>Теоретический материал</h2>
+                    {% for task in theoretical_tasks %}
+                        <div class="flex-task">
+                            <div class="description">
+                                <p>{{ task.description }}</p>
+                            </div>
+                            {% if task.file %}
+                                <div>
+                                    <a href="{{ task.file.url }}">{{ task.file_link_text }}</a>
+                                </div>
+                            {% endif %}
+                            {% if task.image %}
+                                <div class="image-view">
+                                    <img src="{{ task.image.url }}" alt="Task Image" class="task-image">
+                                </div>
+                            {% endif %}
+                            {% if task.video %}
+                                <video controls>
+                                    <source src="{{ task.video.url }}" type="video/mp4">
+                                    Ваш браузер не поддерживает видеоплеер.
+                                </video>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if practical_tasks %}<button type="submit" name="proceed_to_practice" class="btn btn-primary">Перейти к практике</button>
+                    {% endif %}
+                {% elif practical_tasks %}
+                    <h2>Практические задания</h2>
+                    {% for task in practical_tasks %}
+                        <div class="flex-task">
+                            <div class="description">
+                                <p>{{ task.description }}</p>
+                            </div>
+                            {% if task.image %}
+                                <div class="image-view">
+                                    <img src="{{ task.image.url }}" alt="Task Image" class="task-image">
+                                </div>
+                            {% endif %}
+                            {% if task.video %}
+                                <video controls>
+                                    <source src="{{ task.video.url }}" type="video/mp4">
+                                    Ваш браузер не поддерживает видеоплеер.
+                                </video>
+                            {% endif %}
+                            <p>Ваш ответ: </p>
+                            <input type="text" name="answer_{{ task.id }}">
+                        </div>
+                    {% endfor %}
+                    <div class="check-btn">
+                        <button type="submit" class="btn btn-primary">Проверить ответы</button>
+                    </div>
+                {% endif %}
+            </form>
+            <div class="separator"></div>
+            <div class="results">
+                {% if results %}
+                    <h2>Результат:</h2>
+                    <div class="separator"></div>
+                    <ul class="results-list">
+                        {% for task, user_answer, is_correct in results %}
+                            <li>
+                                <span>{{ task.description }} - Ваш ответ: {{ user_answer }} - </span>
+                                <span class="{% if is_correct %}correct{% else %}incorrect{% endif %}">
+                                    {% if is_correct %}
+                                        Верный
+                                    {% else %}
+                                        Неверный
+                                        <div class="explanation">
+                                            {% if task.expl %}
+                                                <p class="explain-red">Объяснение: </p>
+                                                <p>{{ task.expl }}</p>
+                                                <div class="separator-min"></div>
+                                            {% endif %}
+                                            {% if task.expl_img %}
+                                                <p class="explain-red">Объяснение: </p>
+                                                <img src="{{ task.expl_img.url }}" alt="Explanation Image">
+                                                <div class="separator-min"></div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </aside>
+        <footer class="animated-footer">
+            &copy; 2024 РЕПЕТИ_TOP
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
