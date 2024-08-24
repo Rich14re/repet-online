@@ -116,7 +116,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 STATICFILES_FINDERS = [
