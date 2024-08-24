@@ -8,6 +8,8 @@ from django.utils.translation import gettext_lazy as _
 from .models import Task, Course, Explanation, Explain, UserTaskStatus, ComputerScienceTask, ComputerScienceTask, ComputerScienceTaskDetail
 
 class RegisterForm(UserCreationForm):
+    usable_password = None
+    
     username = forms.CharField(
         max_length=100,
         label='Имя пользователя',
