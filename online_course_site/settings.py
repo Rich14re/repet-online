@@ -119,18 +119,23 @@ USE_I18N = True
 USE_TZ = True
 
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Указываем URL для доступа к статическим файлам
 STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # Добавляем папку, в которой будут храниться статические файлы
 STATICFILES_DIRS = [
-    "opt/build/static",
+   BASE_DIR / "static",
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
