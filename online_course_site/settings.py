@@ -126,11 +126,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Указываем URL для доступа к статическим файлам
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Добавляем папку, в которой будут храниться статические файлы
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
