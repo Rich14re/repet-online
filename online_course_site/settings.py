@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-ayn^2*58pp1bev!pb2#f6656_@u&+2i@x9rdo62(w$p=9br=$6
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['http://repetitor-on-line.site']
+CSRF_TRUSTED_ORIGINS = ['https://repetitor-on-line.site']
 
 # Application definition
 
