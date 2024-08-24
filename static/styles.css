@@ -292,6 +292,11 @@ li {
     transform: scale(0.95);
 }
 
+video{
+    max-height: 80vh;
+    max-width: 80vh;
+}
+
 .flex-content {
     display: flex;
     flex: 1;

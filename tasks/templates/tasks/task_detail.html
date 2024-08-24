@@ -62,10 +62,12 @@
                                 </div>
                             {% endif %}
                             {% if task.video %}
-                                <video controls>
-                                    <source src="{{ task.video.url }}" type="video/mp4">
-                                    Ваш браузер не поддерживает видеоплеер.
-                                </video>
+								<div class="image-view">
+									<video controls>
+										<source src="{{ task.video.url }}" type="video/mp4" class = "task-image">
+										Ваш браузер не поддерживает видеоплеер.
+									</video>
+								</div>
                             {% endif %}
                         </div>
                     {% endfor %}
