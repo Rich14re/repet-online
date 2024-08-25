@@ -94,14 +94,9 @@
         });
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var form = document.querySelector('form');
-        form.addEventListener('submit', function() {
-            setTimeout(function() {
-                form.reset();
-            }, 1000);
-        });
-    });
-</script>
+			window.onload = function() {
+				document.querySelector('form').reset();  // Сбрасываем форму при загрузке страницы
+			}
+	</script>
 </body>
 </html>

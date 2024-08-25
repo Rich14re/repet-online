@@ -45,7 +45,6 @@
             <form method="post">
                 {% csrf_token %}
                 {% if theoretical_tasks and not show_practical_tasks %}
-                    <h2>Теоретический материал</h2>
                     {% for task in theoretical_tasks %}
                         <div class="flex-task">
                             <div class="description">
@@ -53,7 +52,7 @@
                             </div>
                             {% if task.file %}
                                 <div>
-                                    <a href="{{ task.file.url }}">{{ task.file_link_text }}</a>
+                                    <a href="{{ task.file.url }}" class="url-text">{{ task.file_link_text }}</a>
                                 </div>
                             {% endif %}
                             {% if task.image %}
@@ -63,8 +62,8 @@
                             {% endif %}
                             {% if task.video %}
 								<div class="image-view">
-									<video controls>
-										<source src="{{ task.video.url }}" type="video/mp4" class = "task-image">
+									<video controls class="video-view">
+										<source src="{{ task.video.url }}" type="video/mp4" class = "video-vi">
 										Ваш браузер не поддерживает видеоплеер.
 									</video>
 								</div>
