@@ -245,6 +245,10 @@ def task_detail(request, course_id):
             'practical_tasks': practical_tasks,
             'results': results,
             'show_practical_tasks': True,
+            'has_platinum_access': has_platinum_access,
+            'has_gold_access': has_gold_access,
+            'has_premium_access': has_premium_access,
+            'has_advanced_access': has_advanced_access,
         })
 
     return render(request, 'tasks/task_detail.html', {
