@@ -43,6 +43,40 @@
             <div class="name-variant">
                 <h1>{{ course.title }}</h1>
             </div>
+            <div class="results">
+                {% if results %}
+                    <div class="separator"></div>
+                    <h2>Результат:</h2>
+                    <div class="separator"></div>
+                    <ul class="results-list">
+                        {% for task, user_answer, is_correct in results %}
+                            <li>
+                                <span>{{ task.description }} - Ваш ответ: {{ user_answer }} - </span>
+                                <span class="{% if is_correct %}correct{% else %}incorrect{% endif %}">
+                                    {% if is_correct %}
+                                        Верный
+                                    {% else %}
+                                        Неверный
+                                        <div class="explanation">
+                                            {% if task.expl %}
+                                                <p class="explain-red">Объяснение: </p>
+                                                <p>{{ task.expl }}</p>
+                                                <div class="separator-min"></div>
+                                            {% endif %}
+                                            {% if task.expl_img %}
+                                                <p class="explain-red">Объяснение: </p>
+                                                <img src="{{ task.expl_img.url }}" alt="Explanation Image">
+                                                <div class="separator-min"></div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                <div class="separator"></div>
+                {% endif %}
+            </div>
             <form method="post">
                 {% csrf_token %}
                 {% if theoretical_tasks and not show_practical_tasks %}
@@ -101,38 +135,6 @@
                 {% endif %}
             </form>
             <div class="separator"></div>
-            <div class="results">
-                {% if results %}
-                    <h2>Результат:</h2>
-                    <div class="separator"></div>
-                    <ul class="results-list">
-                        {% for task, user_answer, is_correct in results %}
-                            <li>
-                                <span>{{ task.description }} - Ваш ответ: {{ user_answer }} - </span>
-                                <span class="{% if is_correct %}correct{% else %}incorrect{% endif %}">
-                                    {% if is_correct %}
-                                        Верный
-                                    {% else %}
-                                        Неверный
-                                        <div class="explanation">
-                                            {% if task.expl %}
-                                                <p class="explain-red">Объяснение: </p>
-                                                <p>{{ task.expl }}</p>
-                                                <div class="separator-min"></div>
-                                            {% endif %}
-                                            {% if task.expl_img %}
-                                                <p class="explain-red">Объяснение: </p>
-                                                <img src="{{ task.expl_img.url }}" alt="Explanation Image">
-                                                <div class="separator-min"></div>
-                                            {% endif %}
-                                        </div>
-                                    {% endif %}
-                                </span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
         </aside>
 		{% else %}
 		<aside>
