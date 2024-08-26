@@ -215,6 +215,17 @@ def task_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     theoretical_tasks = course.tasks.filter(is_theory=True)
     practical_tasks = course.tasks.filter(is_theory=False)
+    
+    user_statuses = request.user.profile.statuses.all()
+
+    # Создаем словарь с информацией о доступности каждого курса для пользователя
+    course_access = {course: course.required_status in user_statuses}
+
+    # Проверка наличия конкретных статусов
+    has_advanced_access = user_statuses.filter(name='advanced').exists()
+    has_premium_access = user_statuses.filter(name='premium').exists()
+    has_gold_access = user_statuses.filter(name='gold').exists()
+    has_platinum_access = user_statuses.filter(name='platinum').exists()
 
     if request.method == 'POST' and 'proceed_to_practice' not in request.POST:
         results = []
@@ -240,6 +251,11 @@ def task_detail(request, course_id):
         'course': course,
         'theoretical_tasks': theoretical_tasks,
         'practical_tasks': practical_tasks,
+        'course_access': course_access,
+        'has_advanced_access': has_advanced_access,
+        'has_premium_access': has_premium_access,
+        'has_gold_access': has_gold_access,
+        'has_platinum_access': has_platinum_access,
         'show_practical_tasks': 'proceed_to_practice' in request.POST,
     })
 

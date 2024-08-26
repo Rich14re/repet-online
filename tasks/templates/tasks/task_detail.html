@@ -38,7 +38,8 @@
                 </nav>
             </div>
         </header>
-        <aside>
+        {% if course.grade == "6class" and has_platinum_access or course.grade == "7class" and has_gold_access or course.grade == "8class" and has_premium_access or course.grade == "9class" and has_advanced_access %}
+		<aside>
             <div class="name-variant">
                 <h1>{{ course.title }}</h1>
             </div>
@@ -133,6 +134,13 @@
                 {% endif %}
             </div>
         </aside>
+		{% else %}
+		<aside>
+			<h1 style="text-align: center; color: red; margin-bottom: 5vh;">У вас нет доступа к этому материалу.</h1>
+			<h2 style="text-align: center; margin-bottom: 2vh;">В случае ошибки обратитесь по данному адресу электронной почты:</h2>
+			<h2 style="text-align: center;">repetitoronlainadm@yandex.ru</h2>
+		</aside>
+		{% endif %}
         <footer class="animated-footer">
             &copy; 2024 РЕПЕТИ_TOP
         </footer>
