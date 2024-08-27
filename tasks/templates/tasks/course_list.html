@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <script src="{% static 'update_success_url.js' %}" defer></script>
-    <script src="{% static 'pay.js' %}" defer></script>
+	<script src="{% static 'pay.js' %}" defer></script>
 </head>
 <body>
     <div class="flex-container">
@@ -70,7 +70,7 @@
                                 <div class="payment-card animated-main">
                                     <img src="{% static 'logo_matem.png' %}" alt="Course Image">
                                     <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
-                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="receiver" id="vlt" value="4100110112906620"/>
                                         <input type="hidden" name="label" value="{{ user.id }}"/>
                                         <input type="hidden" name="quickpay-form" value="shop"/>
                                         <input type="hidden" name="targets" value="Оплата за курс"/>
@@ -114,14 +114,14 @@
                                 <div class="payment-card animated-main">
                                     <img src="{% static 'logo_math.png' %}" alt="Course Image">
                                     <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
-                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="receiver" id="vlt" value="4100110112906620"/>
                                         <input type="hidden" name="label" value="{{ user.id }}"/>
                                         <input type="hidden" name="quickpay-form" value="shop"/>
                                         <input type="hidden" name="targets" value="Оплата за курс"/>
                                         <div class="form-check">
                                             <p style="text-align: center;">Стоимость курса</p>
                                             <p style="text-align: center;">700 рублей</p>
-                                            <input id="sale2" type="hidden" name="sum" id="sale2" value="2.00" data-type="number"/>
+                                            <input id="sale2" type="hidden" name="sum" value="2.00" data-type="number"/>
                                         </div>
                                         <div class="separator"></div>
                                         <div class="type-payment ">
@@ -159,14 +159,14 @@
                                 <div class="payment-card animated-main">
                                     <img src="{% static 'logo_alg.png' %}" alt="Course Image">
                                     <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
-                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="receiver" id="vlt" value="4100110112906620"/>
                                         <input type="hidden" name="label" value="{{ user.id }}"/>
                                         <input type="hidden" name="quickpay-form" value="shop"/>
                                         <input type="hidden" name="targets" value="Оплата за курс"/>
                                         <div class="form-check">
                                             <p style="text-align: center;">Стоимость курса</p>
                                             <p style="text-align: center;">700 рублей</p>
-                                            <input id="sale3" type="hidden" name="sum" id="sale3" value="2.00" data-type="number"/>
+                                            <input id="sale3" type="hidden" name="sum" value="2.00" data-type="number"/>
                                         </div>
                                         <div class="separator"></div>
                                         <div class="type-payment ">
@@ -216,7 +216,7 @@
                                 <div class="payment-card animated-main">
                                     <img src="{% static 'logo.jpg' %}" alt="Course Image">
                                     <form method="POST" action="https://yoomoney.ru/quickpay/confirm">
-                                        <input type="hidden" name="receiver" value="4100110112906620"/>
+                                        <input type="hidden" name="receiver" id="vlt" value="4100110112906620"/>
                                         <input type="hidden" name="label" value="{{ user.id }}"/>
                                         <input type="hidden" name="quickpay-form" value="shop"/>
                                         <input type="hidden" name="targets" value="Оплата за курс"/>
@@ -273,3 +273,4 @@
     </script>
 </body>
 </html>
+

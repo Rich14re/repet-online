@@ -52,6 +52,7 @@
                <h1>correct answer - верный ответ на задание</h1>
                <h1>чуть ниже возможность добавить фото и видео</h1>
            </div>
+		    <button type="button" class="btn btn-primary" onclick="clearForm()">Очистить поля</button>
             <form method="post" enctype="multipart/form-data" autocomplete="off">
                 {% csrf_token %}
                 {{ course_form.as_p }}
@@ -74,6 +75,21 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		function clearForm() {
+			// Очищаем текстовые поля
+			document.querySelectorAll('input[type="text"]').forEach(function(input) {
+				input.value = '';
+			});
+
+			// Устанавливаем все чекбоксы
+			document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+				if (checkbox.id.includes('clear')) {
+                checkbox.checked = true;
+            }
+			});
+		}
+	</script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var navbarToggler = document.querySelector('.navbar-toggler');
